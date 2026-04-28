@@ -7,14 +7,14 @@ class Program
         bool playing = true;
         while (playing){
             Random randGenerator = new Random();
-            int magic = randGenerator.Next(1,11);
+            int magic = randGenerator.Next(1,101);
             Console.WriteLine("A magic number created!");
             
             bool incorrect = true;
             int count = 0;
             while (incorrect){
                 count++;
-                Console.WriteLine("What is your guess?(from 1 to 10)");
+                Console.WriteLine("What is your guess?(from 1 to 100)");
                 string input2 = Console.ReadLine();
                 int guess = int.Parse(input2);
 
