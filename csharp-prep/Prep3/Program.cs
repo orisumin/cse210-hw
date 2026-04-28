@@ -6,18 +6,18 @@ class Program
     {
         bool playing = true;
         while (playing){
-            Console.WriteLine("What is the magic number?");
-            string input1 = Console.ReadLine();
-            int magic = int.Parse(input1);
+            Random randGenerator = new Random();
+            int magic = randGenerator.Next(1,11);
+            Console.WriteLine("A magic number created!");
             
             bool incorrect = true;
             int count = 0;
             while (incorrect){
                 count++;
-                Console.WriteLine("What is your guess?");
+                Console.WriteLine("What is your guess?(from 1 to 10)");
                 string input2 = Console.ReadLine();
                 int guess = int.Parse(input2);
-                
+
                 if (magic > guess)
                 {
                     Console.WriteLine("Higher");
