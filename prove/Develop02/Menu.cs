@@ -25,15 +25,12 @@ public class Menu
     /// </summary>
     public Menu()
     {
-
         // Default methods are set to empty lambdas until I have the real functions
         _BmpOptions.Add(("Write", _bmpActiveJournal.BmpWriteEntry));
         _BmpOptions.Add(("Display", _bmpActiveJournal.DisplayJournal));
         _BmpOptions.Add(("Save", _bmpActiveJournal.SaveJournalAsFile));
         _BmpOptions.Add(("Load", LoadJournal));
         _BmpOptions.Add(("Quit", ()=>{_bmpInUse=false;}));
-
-        
     }
 
     /// <summary>
@@ -42,6 +39,7 @@ public class Menu
     /// </summary>
     public void bmpRun()
     {
+
         _bmpInUse = true;
         do
         {
@@ -97,7 +95,7 @@ public class Menu
                 organizedEntry._bmpPrompt = rawEntry.Split("|")[1];
                 organizedEntry._bmpWriting = rawEntry.Split("|")[2];
                 //add the organized entry to the empty journal
-                newJournal._entries.Add(organizedEntry);
+                _bmpActiveJournal._entries.Add(organizedEntry); //hmmmm
                 }
         _bmpActiveJournal = newJournal;
         notLoaded = false;
