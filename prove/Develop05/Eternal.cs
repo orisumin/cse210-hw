@@ -6,5 +6,13 @@ public class Eternal : Goal
         SetDescription(description);
         SetPoint(point);
     }
+    public override string toLongString()
+    {
+        return $"[ ] {base.toLongString()}";
+    }
+    public override string toFileString()
+    {
+        return $"Eternal:{base.toFileString()}";
+    }
     
 }

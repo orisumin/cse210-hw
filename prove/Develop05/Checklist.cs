@@ -37,4 +37,12 @@ public class Checklist : Goal
     {
         return _GBbonusPoint;
     }
+    public override string toLongString()
+    {
+        return $"[ ] {base.toLongString()} -- Currently completed: {_GBcurrentNumber}/{_GBgoalNumber}";
+    }
+    public override string toFileString()
+    {
+        return $"Cheklist:{base.toFileString()},{_GBbonusPoint},{_GBcurrentNumber},{_GBgoalNumber}";
+    }
 }

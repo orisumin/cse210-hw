@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 public class Goal
 {
     private string _GBname;
@@ -33,5 +35,17 @@ public class Goal
     public int GetPoint()
     {
         return _GBpoint;
+    }
+    public virtual string toLongString()
+    {
+        return $"{_GBname} ({_GBdescription})";
+    }
+    public string toShortString()
+    {
+        return $"{_GBname}";
+    }
+    public virtual string toFileString()
+    {
+        return $"{_GBname},{_GBdescription},{_GBpoint}";
     }
 }
