@@ -6,11 +6,40 @@ public class Goal
     private string _GBdescription;
     private int _GBpoint;
 
+    public Goal()
+    {
+        _GBname = "Undefined";
+        _GBdescription = "No description";
+        _GBpoint = 0;
+    }
     public Goal(string name, string description, int point)
     {
         _GBname = name;
         _GBdescription = description;
         _GBpoint = point;
+    }
+    public virtual void userConstructor()
+    {
+        bool NotValid = true;
+        while(NotValid){
+            try
+            {
+            Console.WriteLine("What is the name of your goal?");
+            _GBname = Console.ReadLine();
+            Console.WriteLine("What is a short description of it?");
+            _GBdescription = Console.ReadLine();
+            Console.WriteLine("What is the amount of points associated with this goal?");
+            _GBpoint = int.Parse(Console.ReadLine());
+            NotValid = false;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid format");
+            }catch (Exception)
+            {
+                Console.WriteLine("Error. Try again");
+            }
+        }
     }
     public void SetName(string name)
     {
@@ -35,6 +64,10 @@ public class Goal
     public int GetPoint()
     {
         return _GBpoint;
+    }
+    public virtual string GetGoalType()
+    {
+        return "None";
     }
     public virtual string toLongString()
     {
