@@ -1,5 +1,8 @@
+using System.Data;
+
 public class Checklist : Goal
 {
+    private bool _isDoneGB;
     private int _GBgoalNumber;
     private int _GBcurrentNumber;
     private int _GBbonusPoint;
@@ -8,12 +11,14 @@ public class Checklist : Goal
         _GBgoalNumber = 0;
         _GBcurrentNumber = 0;
         _GBbonusPoint = 0;
+        _isDoneGB = false;
     }
-    public Checklist(string name, string description, int point, int bonus, int currentNum, int goalNum):base(name, description, point)
+    public Checklist(string name, string description, int point, bool isdone, int bonus, int currentNum, int goalNum):base(name, description, point)
     {
         SetName(name);
         SetDescription(description);
         SetPoint(point);
+        _isDoneGB = false;
         _GBgoalNumber = goalNum;
         _GBcurrentNumber = currentNum;
         _GBbonusPoint = bonus;
@@ -29,7 +34,7 @@ public class Checklist : Goal
             {
             Console.WriteLine("How many times does this goal need to be accomplished for a bonus?");
             _GBgoalNumber = int.Parse(Console.ReadLine());
-            Console.WriteLine("What it the bonus for accomplishing it that many times?");
+            Console.WriteLine("What is the bonus for accomplishing it that many times?");
             _GBbonusPoint = int.Parse(Console.ReadLine());
             NotValid = false;
             }
@@ -38,6 +43,10 @@ public class Checklist : Goal
                 Console.WriteLine("Error. Try again");
             }
         }
+    }
+    public void SetStatus(bool isdone)
+    {
+        _isDoneGB = isdone;
     }
     public void SetGoalNum(int goalNum)
     {
@@ -51,6 +60,10 @@ public class Checklist : Goal
     {
         _GBbonusPoint = bonus;
     }
+    public bool isdone()
+    {
+        return _isDoneGB;
+    }
     public int GetGoalNum()
     {
         return _GBgoalNumber;
@@ -63,17 +76,51 @@ public class Checklist : Goal
     {
         return _GBbonusPoint;
     }
-    public string GetGoalType()
+    public override string GetGoalType()
     {
         return "Checklist";
     }
 
+    public override int getGoalNum()
+    {
+        return _GBgoalNumber;
+    }
+    public string statusPrint()
+    {
+        if (_isDoneGB)
+        {
+            return "X";
+        }   
+        return  " ";
+    }
+
     public override string toLongString()
     {
-        return $"[ ] {base.toLongString()} -- Currently completed: {_GBcurrentNumber}/{_GBgoalNumber}";
+        return $"[{statusPrint()}] {base.toLongString()} -- Currently completed: {_GBcurrentNumber}/{_GBgoalNumber}";
     }
     public override string toFileString()
     {
-        return $"Cheklist:{base.toFileString()},{_GBbonusPoint},{_GBcurrentNumber},{_GBgoalNumber}";
+        return $"Cheklist:{base.toFileString()},{_isDoneGB},{_GBbonusPoint},{_GBcurrentNumber},{_GBgoalNumber}";
     }
+    public int getTotalPoint()
+    {
+        if (_GBcurrentNumber < _GBgoalNumber && _GBcurrentNumber !=0)
+        {
+            return GetPoint()*_GBcurrentNumber;
+        }
+        else if (_GBcurrentNumber == _GBgoalNumber)
+        {
+            return GetPoint()*_GBcurrentNumber + _GBbonusPoint;
+        }
+        else
+        {
+            return 0;
+        }
+        
+    }
+    public override string DisplayHistory()
+    {
+        return $"{GetName()} ({_GBcurrentNumber} times)";
+    }
+
 }

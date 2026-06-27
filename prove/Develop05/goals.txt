@@ -1,0 +1,4 @@
+20
+Simple:simple,de,10,True
+Eternal:eternal,e,10,0
+Cheklist:check,d,10,False,30,0,2

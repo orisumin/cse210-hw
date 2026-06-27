@@ -28,11 +28,11 @@ public class Simple : Goal
     {
         _isDoneGB = isdone;
     }
-    public bool GetStatus()
+    public bool isDone()
     {
         return _isDoneGB;
     }
-    public string GetGoalType()
+    public override string GetGoalType()
     {
         return "Simple";
     }
@@ -43,19 +43,27 @@ public class Simple : Goal
     }
     public string statusPrint()
     {
-        string status = "";
         if (_isDoneGB)
         {
-            status = "X";
-        }
-        else if (!_isDoneGB)
-        {
-            status = " ";
-        }    
-        return status;
+            return "X";
+        }   
+        return  " ";
     }
     public override string toFileString()
     {
-        return $"Simple:{base.toFileString()},{statusPrint()}";
+        return $"Simple:{base.toFileString()},{_isDoneGB}";
+    }
+    public int getTotalPoint()
+    {
+        if (_isDoneGB == true)
+        {
+            return GetPoint();
+        }
+        return 0;
+    }
+    public override string DisplayHistory()
+    {
+        int status = _isDoneGB ? 1:0;
+        return $"{GetName()} ({status} times)";
     }
 }

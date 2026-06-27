@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-public class Goal
+public abstract class Goal
 {
     private string _GBname;
     private string _GBdescription;
@@ -69,6 +69,10 @@ public class Goal
     {
         return "None";
     }
+    public virtual int getGoalNum()
+    {
+        return 0;
+    }
     public virtual string toLongString()
     {
         return $"{_GBname} ({_GBdescription})";
@@ -81,4 +85,5 @@ public class Goal
     {
         return $"{_GBname},{_GBdescription},{_GBpoint}";
     }
+    public abstract string DisplayHistory();
 }
