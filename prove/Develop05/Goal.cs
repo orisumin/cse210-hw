@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 public abstract class Goal
 {
     private string _GBname;
