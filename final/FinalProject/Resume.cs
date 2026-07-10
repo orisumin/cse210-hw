@@ -41,4 +41,74 @@ public class Resume : Document
     {
         _skills = skills;
     }
+    public string educationFileString()
+    {
+        string fileFormat="";
+        foreach (List<string> list in _education.Values)
+        {
+            string listComplied = "";
+            foreach (string element in list)
+            {
+                if(element == list[list.Count - 1])
+                {
+                    listComplied += element;
+                }
+                else
+                {
+                    listComplied += element+"|";
+                }
+            }        
+            fileFormat += listComplied +",";
+        }
+        return fileFormat;
+    }
+    public string experienceFileString()
+    {
+        string fileFormat="";
+        foreach (List<string> list in _experience.Values)
+        {
+            string listComplied = "";
+            foreach (string element in list)
+            {
+                if(element == list[list.Count - 1])
+                {
+                    listComplied += element;
+                }
+                else
+                {
+                    listComplied += element+"|";
+                }
+            }        
+            fileFormat += listComplied +",";
+        }
+        return fileFormat;
+    }
+    public string skillsFileString()
+    {
+        string fileFormat = "";
+        foreach(string skill in _skills)
+        {
+            if (skill == _skills[_skills.Count - 1])
+            {
+                fileFormat += skill;
+            }
+            else
+            {
+                fileFormat += skill + "|";
+            }
+        }
+        return fileFormat;
+    }
+    public override string ToLongString(string name, string email, string phone, string linkedin, string position, DateTime date)
+    {
+        return $"{name}\n{email}-{phone}-{linkedin}\n";
+    }
+    public override string ToShortString()
+    {
+        return $"{getName()}'s Resume: {getPosition()}|{getOrganization()} (Last modified:{timeString()})";
+    }
+    public override string ToFileString()
+    {
+        return $"R:{_summary},{educationFileString()}{experienceFileString()}{skillsFileString()}";
+    }
 }

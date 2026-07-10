@@ -1,8 +1,9 @@
+using System.Globalization;
+
 public class CoverLetter : Document
 {
     private string _contactName;
-    private string _contactOrganization;
-    private List<string> _contactAddress;
+    private Dictionary<string, string> _contactAddress;
     private string _opening;
     private string _second;
     private string _closing;
@@ -10,8 +11,13 @@ public class CoverLetter : Document
     public CoverLetter()
     {
         _contactName = "No contact";
-        _contactOrganization = "No organization";
-        _contactAddress = ["No address"];
+        _contactAddress = new Dictionary<string, string>
+        {
+            {"Street","No description"},
+            {"City","No description"},
+            {"State","No description"},
+            {"ZIPcode","No description"}
+        };
         _opening = "No description";
         _second = "No description";
         _closing = "No description";
@@ -20,11 +26,7 @@ public class CoverLetter : Document
     {
         _contactName = name;
     }
-    public void setOrganization(string organization)
-    {
-        _contactOrganization = organization;
-    }
-    public void setAddress(List<string> address)
+    public void setContactAddress(Dictionary<string, string> address)
     {
         _contactAddress = address;
     }
@@ -44,11 +46,7 @@ public class CoverLetter : Document
     {
         return _contactName;
     }
-    public string getOrganization()
-    {
-        return _contactOrganization;
-    }
-    public List<string> getAddress()
+    public Dictionary<string,string> getContactAddress()
     {
         return _contactAddress;
     }
@@ -64,4 +62,17 @@ public class CoverLetter : Document
     {
         return _closing;
     }
+    public override string ToLongString(string name, string email, string phone, string linkedin, string position, DateTime date)
+    {
+        return $"{name}\n{email}-{phone}-{linkedin}\n{addressString(getAddress())}\n{dateString()}\n{addressString(_contactAddress)}\n\n Dear {_contactName},\n{_opening}\n{_second}\n{_closing}\n\nSincerely,\n{getName()}";
+    }
+    public override string ToShortString()
+    {
+        return $"{getName()}'s Cover Letter: {getPosition()}|{getOrganization()} (Last modified:{timeString()})";
+    }
+    public override string ToFileString()
+    {
+        return $"C:{_contactName},{getOrganization()},{_contactAddress["Street"]},{_contactAddress["City"]},{_contactAddress["State"]},{_contactAddress["ZIPcode"]},{_opening},{_second},{_closing}";
+    }
+
 }
