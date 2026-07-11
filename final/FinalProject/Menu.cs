@@ -7,10 +7,10 @@ public class Menu
     public Menu()
     {
         _options = [
-            "1. ",
-            "2. ",
-            "3. ",
-            "4. ",
+            "1. Create a new document",
+            "2. Show all documents",
+            "3. Load document file",
+            "4. Save documents",
         ];
         _currentList = new List<Document>();
     }
@@ -29,6 +29,15 @@ public class Menu
     public List<Document> getCurrentList()
     {
         return _currentList;
+    }
+    public void Display()
+    {
+        string format = "";
+        foreach (string option in _options)
+        {
+            format += "    " + option + "\n";
+        }
+        Console.WriteLine(format+"Choose a number.");
     }
     public void SavetoFile()
     {
