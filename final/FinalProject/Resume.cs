@@ -58,7 +58,7 @@ public class Resume : Document
                     listComplied += element+"|";
                 }
             }        
-            fileFormat += listComplied +",";
+            fileFormat += listComplied +"+";
         }
         return fileFormat;
     }
@@ -79,7 +79,7 @@ public class Resume : Document
                     listComplied += element+"|";
                 }
             }        
-            fileFormat += listComplied +",";
+            fileFormat += listComplied +"+";
         }
         return fileFormat;
     }
@@ -109,6 +109,6 @@ public class Resume : Document
     }
     public override string ToFileString()
     {
-        return $"R:{_summary},{educationFileString()}{experienceFileString()}{skillsFileString()}";
+        return $"R:{getName()}+{getEmail()}+{getPhone()}+{getLinkedin()}+{getAddress()["Street"]}+{getAddress()["City"]}+{getAddress()["State"]}+{getAddress()["ZIPcode"]}+{getPosition()}+{getOrganization()}+{dateString()}+{getStatus()}+{_summary}+{educationFileString()}{experienceFileString()}{skillsFileString()}";
     }
 }

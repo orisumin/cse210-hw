@@ -7,11 +7,28 @@ public class Document
     private Dictionary<string,string> _address;
     private string _position;
     private string _organization;
-
     private DateTime _date;
     private bool _isHired;
 
     public Document()
+    {
+        _name = "No name";
+        _email = "No email";
+        _phone = "No number";
+        _linkedin = "No address";
+        _address = new Dictionary<string, string>
+        {
+            {"Street","No description"},
+            {"City","No description"},
+            {"State","No description"},
+            {"ZIPcode","No description"}
+        };
+        _position = "No position";
+        _organization = "No organization";
+        _date = DateTime.Now;
+        _isHired = false;
+    }
+     public Document(string name, string email, string phone, string linkedin, Dictionary<string, string>address, string position, string organization, DateTime date, bool status)
     {
         _name = "No name";
         _email = "No email";
@@ -133,6 +150,6 @@ public class Document
     }
     public virtual string ToFileString()
     {
-        return $"D:{_name},{_email},{_phone},{_linkedin},{_address["Street"]},{_address["City"]},{_address["State"]},{_address["ZIPcode"]},{_position},{dateString()},{_isHired}";
+        return $"D:{_name}+{_email}+{_phone}+{_linkedin}+{_address["Street"]}+{_address["City"]}+{_address["State"]}+{_address["ZIPcode"]}+{_position}+{_organization}+{dateString()}+{_isHired}";
     }
 }

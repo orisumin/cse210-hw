@@ -22,6 +22,14 @@ public class CoverLetter : Document
         _second = "No description";
         _closing = "No description";
     }
+    public CoverLetter(string contactName, Dictionary<string,string>contactAddress, string opening, string second, string closing)
+    {
+                _contactName = contactName;
+        _contactAddress = contactAddress;
+        _opening = opening;
+        _second = second;
+        _closing = closing;
+    }
     public void setContactName(string name)
     {
         _contactName = name;
@@ -72,7 +80,7 @@ public class CoverLetter : Document
     }
     public override string ToFileString()
     {
-        return $"C:{_contactName},{getOrganization()},{_contactAddress["Street"]},{_contactAddress["City"]},{_contactAddress["State"]},{_contactAddress["ZIPcode"]},{_opening},{_second},{_closing}";
+        return $"C:{getName()}+{getEmail()}+{getPhone()}+{getLinkedin()}+{getAddress()["Street"]}+{getAddress()["City"]}+{getAddress()["State"]}+{getAddress()["ZIPcode"]}+{getPosition()}+{getOrganization()}+{dateString()}+{getStatus()}+{_contactName}+{_contactAddress["Street"]}+{_contactAddress["City"]}+{_contactAddress["State"]}+{_contactAddress["ZIPcode"]}+{_opening}+{_second}+{_closing}";
     }
 
 }
