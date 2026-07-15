@@ -28,7 +28,7 @@ public class Document
         _date = DateTime.Now;
         _isHired = false;
     }
-     public Document(string name, string email, string phone, string linkedin, Dictionary<string, string>address, string position, string organization, DateTime date, bool status)
+     public Document(string name, string email, string phone, string linkedin, Dictionary<string, string>address, string position, string organization, bool status)
     {
         _name = "No name";
         _email = "No email";

@@ -24,7 +24,7 @@ public class CoverLetter : Document
     }
     public CoverLetter(string contactName, Dictionary<string,string>contactAddress, string opening, string second, string closing)
     {
-                _contactName = contactName;
+        _contactName = contactName;
         _contactAddress = contactAddress;
         _opening = opening;
         _second = second;

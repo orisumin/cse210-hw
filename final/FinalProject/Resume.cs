@@ -33,6 +33,46 @@ public class Resume : Document
     {
         _education = education;
     }
+    public void setASchool(string schoolName)
+    {
+        _education["Shool"].Add(schoolName);
+    }
+    public void setADgree(string degree)
+    {
+        _education["Degree"].Add(degree);
+    }
+    public void setAEdPeriod(string period)
+    {
+        _education["Period"].Add(period);
+    }
+    public void setAEdLocation(string location)
+    {
+        _education["Location"].Add(location);
+    }
+    public void setAEdDescription(string description)
+    {
+        _education["Description"].Add(description);
+    }
+    public void setACompany(string companyName)
+    {
+        _experience["Company"].Add(companyName);
+    }
+    public void setAPosition(string position)
+    {
+        _experience["Position"].Add(position);
+    }
+    public void setAExPeriod(string period)
+    {
+        _experience["Period"].Add(period);
+    }
+    public void setAExLocation(string location)
+    {
+        _experience["Location"].Add(location);
+    }
+    public void setAExDescription(string description)
+    {
+        _experience["Description"].Add(description);
+    }
     public void setExperience(Dictionary<string, List<string>> experience)
     {
         _experience = experience;
@@ -40,6 +80,26 @@ public class Resume : Document
     public void setSkills(List<string> skills)
     {
         _skills = skills;
+    }
+    public void setASkill(string skill)
+    {
+        _skills.Add(skill);
+    }
+    public string getSummary()
+    {
+        return _summary;
+    }
+    public Dictionary<string,List<string>> getEducation()
+    {
+        return _education;
+    }
+    public Dictionary<string,List<string>> getExperience()
+    {
+        return _experience;
+    }
+    public List<string> getSkills()
+    {
+        return _skills;
     }
     public string educationFileString()
     {

@@ -5,6 +5,10 @@ class Program
     static void Main(string[] args)
     {
         Menu menu = new Menu();
-        menu.Display();
+        while (menu.getStatus())
+        {
+        menu.SelectOption();
+        }
+
     }
 }

@@ -3,7 +3,7 @@ public class Menu
 {
     private List<string> _options;
     private List<Document> _currentList;
-
+    private bool _ifPlaying;
     public Menu()
     {
         _options = [
@@ -11,8 +11,10 @@ public class Menu
             "2. Show all documents",
             "3. Load document file",
             "4. Save documents",
+            "5. Quit",
         ];
         _currentList = new List<Document>();
+        _ifPlaying = true;
     }
     public void setOptions(List<string>options)
     {
@@ -30,6 +32,10 @@ public class Menu
     {
         return _currentList;
     }
+    public bool getStatus()
+    {
+        return _ifPlaying;
+    }
     public void Display()
     {
         string format = "";
@@ -38,6 +44,108 @@ public class Menu
             format += "    " + option + "\n";
         }
         Console.WriteLine(format+"Choose a number.");
+        
+    }
+    public void SelectOption()
+    {
+        Display();
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                switch (userinput)
+                {
+                    case 1:
+                        CreateNewDoc();
+                        break;
+                    case 2:
+                        ShowAllDOc();
+                        break;
+                    case 3:
+                        FileToList();
+                        break;
+                    case 4:
+                        SavetoFile();
+                        break;
+                    case 5:
+                        _ifPlaying = false;
+                        break;
+                
+                } 
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine("Error. Select a number from the menu.\n");
+                Display();
+            }
+        }
+
+    }
+    public void CreateNewDoc()
+    {
+        Console.WriteLine("\nWhat kind of document do you want to create?\n    1. Cover Letter\n    2. Resume\n 3. Go back");
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                switch (userinput)
+                {
+                    case 1:
+                        NewCovLet(); 
+                        break;
+                    case 2:
+                        NewRes();
+                        break;
+                    case 3:
+                        SelectOption();
+                        break;
+                } 
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine("Error. Select a number from the menu.\n");
+                Display();
+            }
+        }
+    }
+    public void NewCovLet()
+    {
+        Console.WriteLine("Your name: ");
+        string name = Console.ReadLine();
+        Console.WriteLine("Your email");
+        string email = Console.ReadLine();
+        Console.WriteLine("Your phone number: ");
+        string phone = Console.ReadLine();
+        Console.WriteLine("Your LinkedIn link: ");
+        string link = Console.ReadLine();
+        Console.WriteLine("What position are you applying for? ");
+        string position = Console.ReadLine();
+        Console.WriteLine("What is the name of the company? ");
+        string organization = Console.ReadLine();
+        CoverLetter coverLetter = new CoverLetterWriter()
+                                    .AddName(name)
+                                    .AddEmail(email)
+                                    .AddPhone(phone)
+                                    .AddLinkedin(link)
+                                    .AddPosition(position)
+                                    .AddCompany(organization)
+                                    .Write();
+    }
+    public void NewRes()
+    {
+        
+    }
+    public void ShowAllDOc()
+    {
+        
+    }
+    public void Menu4()
+    {
+        
     }
     public void SavetoFile()
     {
@@ -54,14 +162,28 @@ public class Menu
     }
     public void FileToList()
     {
-        _currentList = [];
-        Console.WriteLine("What is the file name?");
-        string fileName = Console.ReadLine();
-
-        using (StreamReader reader = new StreamReader(fileName))
+        _currentList.Clear();
+        bool notValid  = true;
+        while (notValid)
         {
-            
+            Console.WriteLine("What is the file name?");
+            try{
+                string fileName = Console.ReadLine();
+
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    _currentList.Add(RawToDocument(reader.ReadLine()));
+                }        
+                notValid = false;
+            }catch(FileNotFoundException){
+                Console.WriteLine("No file found");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error. Try again");
+            }
         }
+
 
     }
     public Document RawToDocument(string rawLine)
@@ -84,7 +206,7 @@ public class Menu
             string organization = attributes.Split("+")[9];
             DateTime date = DateTime.ParseExact(attributes.Split("+")[10], "MMMM dd, yyyy", CultureInfo.InvariantCulture);
             bool status = bool.Parse(attributes.Split("+")[11]);
-        Document document = new Document(name, email, phone, linkedin, address, position, organization, date, status);
+        Document document = new Document(name, email, phone, linkedin, address, position, organization, status);
         
         if(type == "C")
         {
