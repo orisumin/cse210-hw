@@ -1,4 +1,6 @@
+using System.Configuration.Assemblies;
 using System.Globalization;
+using System.Linq;
 public class Menu
 {
     private List<string> _options;
@@ -112,40 +114,155 @@ public class Menu
             }
         }
     }
+    public Document ReuseProfile(string doctype)
+    {
+        Console.WriteLine("Select one from existing infromation.");
+        string print = "";
+        int i = 1;
+        foreach(Document doc in _currentList)
+        {
+            print += $"{i}. {doc.ToProfileString()}";
+            i++;
+        }
+        Console.WriteLine(print);
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                Document selected = _currentList[userinput-1];
+                Console.WriteLine($"Ok! Let's create a new {doctype} with this profile.\n{selected.ToProfileString()}");
+                notValid = false;
+                return selected;
+            }catch (Exception)
+            {
+                Console.WriteLine("Error. Select a number from the menu.\n");
+                Display();
+            }
+        }
+        Document document = new Document();
+        return document;
+    }
     public void NewCovLet()
     {
-        Console.WriteLine("Your name: ");
-        string name = Console.ReadLine();
-        Console.WriteLine("Your email");
-        string email = Console.ReadLine();
-        Console.WriteLine("Your phone number: ");
-        string phone = Console.ReadLine();
-        Console.WriteLine("Your LinkedIn link: ");
-        string link = Console.ReadLine();
-        Console.WriteLine("What position are you applying for? ");
-        string position = Console.ReadLine();
-        Console.WriteLine("What is the name of the company? ");
-        string organization = Console.ReadLine();
-        CoverLetter coverLetter = new CoverLetterWriter()
-                                    .AddName(name)
-                                    .AddEmail(email)
-                                    .AddPhone(phone)
-                                    .AddLinkedin(link)
-                                    .AddPosition(position)
-                                    .AddCompany(organization)
-                                    .Write();
+        CoverLetter coverLetter;
+        if (_currentList.Count() > 0)
+        {
+            Document selected = ReuseProfile("cover letter");
+            coverLetter = new CoverLetterWriter()
+                                        .AddName(selected.getName())
+                                        .AddEmail(selected.getEmail())
+                                        .AddPhone(selected.getPhone())
+                                        .AddLinkedin(selected.getLinkedin())
+                                        .AddPosition(selected.getPosition())
+                                        .AddCompany(selected.getOrganization())
+                                        .Write();
+        }
+        else
+        {
+            Console.WriteLine("Your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Your email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Your phone number: ");
+            string phone = Console.ReadLine();
+            Console.WriteLine("Your LinkedIn link: ");
+            string link = Console.ReadLine();
+            Console.WriteLine("What position are you applying for? ");
+            string position = Console.ReadLine();
+            Console.WriteLine("What is the name of the company? ");
+            string organization = Console.ReadLine();
+           coverLetter = new CoverLetterWriter()
+                                        .AddName(name)
+                                        .AddEmail(email)
+                                        .AddPhone(phone)
+                                        .AddLinkedin(link)
+                                        .AddPosition(position)
+                                        .AddCompany(organization)
+                                        .Write();        
+        }
+        Console.WriteLine("Let's write the opening paragraph of your cover letter!\n    - Introduce yourself and tell why you are writing\n    - Why are you interested in this position and this organization?\n    - if someone has referred you to the organization (a current employee, friend, family member) include his or her name in the first sentence.\n     - Briefly explain your experience in the field\n    - Mention one key, quantifiable achievement\nYou may write it here. When you're don, press Enter.");
+        coverLetter.setOpening(Console.ReadLine());
+
+        Console.WriteLine("Let's write the second paragraph of your cover letter!\n    - Connect your experiences and skills to the job description\n    - Cescribe your qualifications for the position using specific examples from academic, work, volunteer, and/or co-curricular experiences.\n    - Include specific numbers, results, and accomplishments\n    - Consider using words or language in the job description");
+        coverLetter.setSecond(Console.ReadLine());
+
+        Console.WriteLine("Let's write the last paragraph of your cover letter!\n    - Summarize or give a final statement of interest/qualifications\n    - Thank the employer for his/her time and consideration\n    - Consider tying in the company’s tagline, mission, or values");
+        coverLetter.setClosing(Console.ReadLine());
+
+        Console.WriteLine($"Let's take a look at the cover letter. \n\n{coverLetter.ToLongString()}");
+        coverLetter.EditAttributes();
+
+
     }
+
     public void NewRes()
     {
+        Resume resume;
+        if (_currentList.Count() > 0)
+        {
+            Document selected = ReuseProfile("resume");
+            resume = new ResumeWriter()
+                                .AddName(selected.getName())
+                                .AddEmail(selected.getEmail())
+                                .AddPhone(selected.getPhone())
+                                .AddLinkedin(selected.getLinkedin())
+                                .AddPosition(selected.getPosition())
+                                .AddCompany(selected.getOrganization())
+                                .Write();
+        }
+        else
+        {
+            Console.WriteLine("Your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Your email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Your phone number: ");
+            string phone = Console.ReadLine();
+            Console.WriteLine("Your LinkedIn link: ");
+            string link = Console.ReadLine();
+            Console.WriteLine("What position are you applying for?");
+            string position = Console.ReadLine();
+            Console.WriteLine("What is the name of the company?");
+            string organization = Console.ReadLine();
+            resume = new ResumeWriter()
+                                .AddName(name)
+                                .AddEmail(email)
+                                .AddPhone(phone)
+                                .AddLinkedin(link)
+                                .AddPosition(position)
+                                .AddCompany(organization)
+                                .Write();        
+        }
+        Console.WriteLine("Let's write the summary of your resume!\n    - A concise, 2-to-4 sentence introduction\n    - Outline your core experience, key skills, and biggest measurable achievements\n    - Omit pronouns like 'I' or 'my'\n     - Describe 2–3 core skills or keywords tailored directly to the job description");
+        resume.setSummary(Console.ReadLine());
+
+        Console.WriteLine("Let's explain your education!");
+        resume.userSetEducation();
+
+        Console.WriteLine("Let's explain your work experiences!");
+        resume.userSetExperience();
+
+        Console.WriteLine($"Let's take a look at the cover letter. \n\n{resume.ToLongString()}");
+        resume.EditAttributes();    
         
     }
     public void ShowAllDOc()
     {
-        
-    }
-    public void Menu4()
-    {
-        
+        _currentList = _currentList
+                        .OrderBy(doc => doc.getName())
+                        .ThenBy(doc => doc.getPosition())
+                        .ThenBy(doc => doc.getOrganization())
+                        .ToList();
+        string print ="";
+        int i = 1;
+        foreach(Document doc in _currentList)
+        {
+            print += $"{i}. {doc.ToShortString()}";
+            i++;
+        }
+        Console.WriteLine(print);
     }
     public void SavetoFile()
     {

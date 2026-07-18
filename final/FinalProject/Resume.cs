@@ -159,9 +159,101 @@ public class Resume : Document
         }
         return fileFormat;
     }
-    public override string ToLongString(string name, string email, string phone, string linkedin, string position, DateTime date)
+    public void userSetEducation()
     {
-        return $"{name}\n{email}-{phone}-{linkedin}\n";
+        bool moretoAdd = true;
+        while (moretoAdd)
+        {
+            Console.Write("\nSchool: ");
+            _education["School"].Add(Console.ReadLine());
+            Console.Write("\nDegree: ");
+            _education["Degree"].Add(Console.ReadLine());
+            Console.Write("\nLocation (e.g. Rexburg, ID): ");
+            _education["Location"].Add(Console.ReadLine());
+            Console.Write("\nPeriod (e.g. April 2018 - July 2020): ");
+            _education["Period"].Add(Console.ReadLine());
+            Console.Write("\nDescription: ");
+            _education["Description"].Add(Console.ReadLine());
+
+            bool notValid = true;
+            while (notValid)
+            {
+                Console.WriteLine("Any more?(y/n)");
+                string userinput = Console.ReadLine();
+                if (userinput == "y")
+                {
+                    notValid = false;
+                    
+                }
+                else if (userinput == "n")
+                {
+                    notValid = false;
+                    moretoAdd = false;
+                }
+                else
+                {
+                    Console.WriteLine("Error. Please answer with (y/n).");
+                }
+                
+            }
+
+
+
+            
+        }
+
+
+    }
+    public void userSetExperience()
+    {
+        
+    }
+    public void userSetSkill()
+    {
+        
+    }
+    public override void EditAttributes()
+    {
+        Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}");
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                switch (userinput)
+                {
+                    case 1:
+                        Console.WriteLine($"Let's rewrite the summary. (Current summary:\n{_summary})");
+                        _summary = Console.ReadLine();
+                        break;
+                    case 2:
+                        Console.WriteLine($"Let's edit the education section! (Current contact address:)");
+                        userSetEducation();
+                        break;
+                    case 3:
+                        Console.WriteLine($"Let's edit the experience section! (Current contact address:)");
+                        userSetExperience();
+                        break;
+                    case 4:
+                        Console.WriteLine($"Let's edit the skill section! (Current paragraph:\n)");
+                        userSetSkill();
+                        break;
+                } 
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}");
+            }
+        }
+    }
+    public override string ToPartsString()
+    {
+        return "    1. summary\n    2. education\n    3. experience\n    4. skill";
+    }
+    public override string ToLongString()
+    {
+        return $"{getName()}\n{getEmail()}-{getPhone()}-{getLinkedin()}\n";
     }
     public override string ToShortString()
     {

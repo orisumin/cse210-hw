@@ -70,9 +70,59 @@ public class CoverLetter : Document
     {
         return _closing;
     }
-    public override string ToLongString(string name, string email, string phone, string linkedin, string position, DateTime date)
+    public override string ToPartsString()
     {
-        return $"{name}\n{email}-{phone}-{linkedin}\n{addressString(getAddress())}\n{dateString()}\n{addressString(_contactAddress)}\n\n Dear {_contactName},\n{_opening}\n{_second}\n{_closing}\n\nSincerely,\n{getName()}";
+        return "    1. contact name\n    2. address\n    3. opening paragraph\n    4. second paragraph\n    5. closing paragraph";
+    }
+    public override void EditAttributes()
+    {
+        Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}");
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                switch (userinput)
+                {
+                    case 1:
+                        Console.WriteLine($"What is the new contact name? (Current contact name:{_contactName})");
+                        _contactName = Console.ReadLine();
+                        break;
+                    case 2:
+                        Console.WriteLine($"Let's set a new contact address! (Current contact address:{addressString(_contactAddress)})");
+                        Console.Write("What is the new street address?");
+                        _contactAddress["Street"] = Console.ReadLine();
+                        Console.Write("Where is the new City?");
+                        _contactAddress["City"] = Console.ReadLine();
+                        Console.Write("Where is the new state?");
+                        _contactAddress["State"] = Console.ReadLine();
+                        Console.Write("What is the new ZIP code?");
+                        _contactAddress["ZIPcode"] = Console.ReadLine();
+                        break;
+                    case 3:
+                        Console.WriteLine($"Let's rewrite the first paragraph. (Current paragraph:\n{_opening})");
+                        _opening = Console.ReadLine();
+                        break;
+                    case 4:
+                        Console.WriteLine($"Let's rewrite the second paragraph. (Current paragraph:\n{_second})");
+                        _second = Console.ReadLine();
+                        break;
+                    case 5:
+                        Console.WriteLine($"Let's rewrite the last paragraph. (Current paragraph:\n{_closing})");
+                        _closing = Console.ReadLine();
+                        break;
+                } 
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}");
+            }
+        }
+    }
+    public override string ToLongString()
+    {
+        return $"{getName()}\n{getEmail()}-{getPhone()}-{getLinkedin()}\n{addressString(getAddress())}\n{dateString()}\n{addressString(_contactAddress)}\n\n Dear {_contactName},\n{_opening}\n{_second}\n{_closing}\n\nSincerely,\n{getName()}";
     }
     public override string ToShortString()
     {

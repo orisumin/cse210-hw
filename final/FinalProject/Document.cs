@@ -140,7 +140,73 @@ public class Document
     {
         return $"{address["Street"]}\n{address["City"]},{address["State"]},{address["ZIPcode"]}";
     }
-    public virtual string ToLongString(string name, string email, string phone, string linkedin, string position, DateTime date)
+    public virtual string ToPartsString()
+    {
+        return "    1. name\n    2. email\n    3. phone\n    4.LinkedIn\n    5. address\n    6. position\n    7. organization";
+    }
+    public void EditProfile()
+    {
+        Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}");
+        bool notValid = true;
+        while (notValid)
+        {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                switch (userinput)
+                {
+                    case 1:
+                        Console.WriteLine($"What is the new name? (Current name:{_name})");
+                        _name = Console.ReadLine();
+                        break;
+                    case 2:
+                        Console.WriteLine($"What is the new email? (Current email:{_email})");
+                        _email = Console.ReadLine();
+                        break;
+                    case 3:
+                        Console.WriteLine($"What is the new phone number? (Current phone number:{_phone})");
+                        _phone = Console.ReadLine();
+                        break;
+                    case 4:
+                        Console.WriteLine($"What is the new LinkedIn link? (Current link:{_linkedin})");
+                        _linkedin = Console.ReadLine();
+                        break;
+                    case 5:
+                        Console.WriteLine($"Let's set a new address! (Current address:{addressString(_address)})\n");
+                        Console.Write("What is the new street address?");
+                        _address["Street"] = Console.ReadLine();
+                        Console.Write("Where is the new City?");
+                        _address["City"] = Console.ReadLine();
+                        Console.Write("Where is the new state?");
+                        _address["State"] = Console.ReadLine();
+                        Console.Write("What is the new ZIP code?");
+                        _address["ZIPcode"] = Console.ReadLine();
+                        break;
+                    case 6:
+                        Console.WriteLine($"What is the new position? (Current position:{_position})");
+                        _position = Console.ReadLine();
+                        break;
+                    case 7:
+                        Console.WriteLine($"What is the new campany? (Current company:{_organization})");
+                        _organization = Console.ReadLine();
+                        break;
+                } 
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}");
+            }
+        }
+    }
+    public virtual void EditAttributes()
+    {
+        
+    }
+    public string ToProfileString()
+    {
+        return $"{_name}({_position}|{_organization})\n    email:{_email}\n    phone:{_phone}\n    LinkedIn:{_linkedin}\n    email:{_address["Street"]},{_address["City"]},{_address["State"]},{_address["ZIPcode"]}";
+    }
+    public virtual string ToLongString()
     {
         return "";
     }
