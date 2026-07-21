@@ -34,7 +34,7 @@ public class Resume : Document
     }
     public void setASchool(string schoolName)
     {
-        _education["Shool"].Add(schoolName);
+        _education["School"].Add(schoolName);
     }
     public void setADgree(string degree)
     {
@@ -98,47 +98,42 @@ public class Resume : Document
     }
     public string educationFileString()
     {
-        string fileFormat="";
+        string fileFormat = "";
+
         foreach (List<string> list in _education.Values)
         {
-            string listComplied = "";
-            foreach (string element in list)
+            for (int i = 0; i < list.Count; i++)
             {
-                if(element == list[list.Count - 1])
-                {
-                    listComplied += element;
-                }
-                else
-                {
-                    listComplied += element+"|";
-                }
-            }        
-            fileFormat += listComplied +"+";
+                fileFormat += list[i];
+
+                if (i < list.Count - 1)
+                    fileFormat += "|";
+            }
+
+            fileFormat += "+";
         }
+
         return fileFormat;
     }
     public string experienceFileString()
     {
-        string fileFormat="";
+        string fileFormat = "";
+
         foreach (List<string> list in _experience.Values)
         {
-            string listComplied = "";
-            foreach (string element in list)
+            for (int i = 0; i < list.Count; i++)
             {
-                if(element == list[list.Count - 1])
-                {
-                    listComplied += element;
-                }
-                else
-                {
-                    listComplied += element+"|";
-                }
-            }        
-            fileFormat += listComplied +"+";
+                fileFormat += list[i];
+
+                if (i < list.Count - 1)
+                    fileFormat += "|";
+            }
+
+            fileFormat += "+";
         }
+
         return fileFormat;
-    }
-    public string skillsFileString()
+}    public string skillsFileString()
     {
         string fileFormat = "";
         foreach(string skill in _skills)

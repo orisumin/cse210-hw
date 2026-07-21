@@ -14,6 +14,12 @@ public class CoverLetterWriter : Writer<CoverLetter, CoverLetterWriter>
         _document.setOrganization(organization);
         return this;
     }
+    public CoverLetterWriter AddContactAddress(Dictionary<string,string> address)
+    {
+        _document.setContactAddress(address);
+        return this;
+    }
+    
     public CoverLetterWriter AddContactStreet(string street)
     {
         _document.getContactAddress()["Street"] = street;

@@ -369,89 +369,131 @@ public class Menu
 
                 using (StreamReader reader = new StreamReader(fileName))
                 {
-                    _currentList.Add(RawToDocument(reader.ReadLine()));
+                    string line;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        _currentList.Add(RawToDocument(line));
+                    }
                 }        
                 notValid = false;
             }catch(FileNotFoundException){
                 Console.WriteLine("No file found");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Error. Try again");
+                Console.WriteLine(ex);
             }
         }
-
 
     }
     public Document RawToDocument(string rawLine)
     {
         string type = rawLine.Split(":")[0];
         string attributes = rawLine.Split(":")[1];
-
-            string name = attributes.Split("+")[0];
-            string email = attributes.Split("+")[1];
-            string phone = attributes.Split("+")[2];
-            string linkedin = attributes.Split("+")[3];
-            Dictionary<string,string> address = new Dictionary<string, string>
-            {
-                {"Street",attributes.Split("+")[4]},
-                {"City",attributes.Split("+")[5]},
-                {"State",attributes.Split("+")[6]},
-                {"ZIPcode",attributes.Split("+")[7]}
-            };
-            string position = attributes.Split("+")[8];
-            string organization = attributes.Split("+")[9];
-            DateTime date = DateTime.ParseExact(attributes.Split("+")[10], "MMMM dd, yyyy", CultureInfo.InvariantCulture);
-            bool status = bool.Parse(attributes.Split("+")[11]);
-        Document document = new Document(name, email, phone, linkedin, address, position, organization, status);
+        string [] details = attributes.Split("+");
         
         if(type == "C")
         {
-            string contactName = attributes.Split("+")[12];
+            string name = details[0];
+            string email = details[1];
+            string phone = details[2];
+            string linkedin = details[3];
+            Dictionary<string,string> address = new Dictionary<string, string>
+            {
+                {"Street",details[4]},
+                {"City",details[5]},
+                {"State",details[6]},
+                {"ZIPcode",details[7]}
+            };
+            string position = details[8];
+            string organization = details[9];
+            DateTime date = DateTime.ParseExact(details[10], "MMMM dd, yyyy", CultureInfo.InvariantCulture);
+            bool status = bool.Parse(details[11]);
+            string contactName = details[12];
             Dictionary<string,string> contactAddress = new Dictionary<string, string>
             {
-                {"Street",attributes.Split("+")[13]},
-                {"City",attributes.Split("+")[14]},
-                {"State",attributes.Split("+")[15]},
-                {"ZIPcode",attributes.Split("+")[16]}};
-                string opening = attributes.Split("+")[17];
-                string second = attributes.Split("+")[18];
-                string closing = attributes.Split("+")[19];
-            CoverLetter coverletter = (CoverLetter)document;
+                {"Street",details[13]},
+                {"City",details[14]},
+                {"State",details[15]},
+                {"ZIPcode",details[16]}};
+                string opening = details[17];
+                string second = details[18];
+                string closing = details[19];
+            CoverLetter coverletter = new CoverLetterWriter()
+                                        .AddName(name)
+                                        .AddEmail(email)
+                                        .AddPhone(phone)
+                                        .AddLinkedin(linkedin)
+                                        .AddAddress(address)
+                                        .AddPosition(position)
+                                        .AddCompany(organization)
+                                        .AddStatus(status)
+                                        .AddDate(date)
+                                        .Write();
             coverletter.setContactName(contactName);
-            coverletter.setAddress(contactAddress);
+            coverletter.setContactAddress(contactAddress);
             coverletter.setOpening(opening);
             coverletter.setSecond(second);
             coverletter.setClosing(closing);
-
+            return coverletter;
         }
         else if(type == "R")
-        {
-            string summary = attributes.Split("+")[12];
+        {            
+            string name = details[0];
+            string email = details[1];
+            string phone = details[2];
+            string linkedin = details[3];
+            Dictionary<string,string> address = new Dictionary<string, string>
+            {
+                {"Street",details[4]},
+                {"City",details[5]},
+                {"State",details[6]},
+                {"ZIPcode",details[7]}
+            };
+            string position = details[8];
+            string organization = details[9];
+            DateTime date = DateTime.ParseExact(details[10], "MMMM dd, yyyy", CultureInfo.InvariantCulture);
+            bool status = bool.Parse(details[11]);
+
+            string summary = details[12];
             Dictionary<string,List<string>> education = new Dictionary<string, List<string>>{
-           {"School",rawToList(attributes.Split("+")[13])},
-           {"Degree",rawToList(attributes.Split("+")[14])},
-           {"Period",rawToList(attributes.Split("+")[15])},
-           {"Location",rawToList(attributes.Split("+")[16])},
-           {"Description",rawToList(attributes.Split("+")[17])}
+           {"School",rawToList(details[13])},
+           {"Degree",rawToList(details[14])},
+           {"Period",rawToList(details[15])},
+           {"Location",rawToList(details[16])}
         };
             Dictionary<string,List<string>> experience = new Dictionary<string, List<string>>{
-           {"Company",rawToList(attributes.Split("+")[18])},
-           {"Position",rawToList(attributes.Split("+")[19])},
-           {"Period",rawToList(attributes.Split("+")[20])},
-           {"Location",rawToList(attributes.Split("+")[21])},
-           {"Description",rawToList(attributes.Split("+")[22])}            
+           {"Company",rawToList(details[17])},
+           {"Position",rawToList(details[18])},
+           {"Period",rawToList(details[19])},
+           {"Location",rawToList(details[20])},
+           {"Description",rawToList(details[21])}            
         };
-            List<string> skills = rawToList(attributes.Split("+")[23]);
+            List<string> skills = rawToList(details[22]);
 
-            Resume resume = (Resume)document;
+            Resume resume = new ResumeWriter()
+                                        .AddName(name)
+                                        .AddEmail(email)
+                                        .AddPhone(phone)
+                                        .AddLinkedin(linkedin)
+                                        .AddAddress(address)
+                                        .AddPosition(position)
+                                        .AddCompany(organization)
+                                        .AddStatus(status)
+                                        .AddDate(date)
+                                        .Write();
             resume.setSummary(summary);
             resume.setEducation(education);
             resume.setExperience(experience);
             resume.setSkills(skills);
-
+            return resume;
         }
-        return document;
+        else{
+            Document document = new Document();
+        return document;        
+        }
+
     }
     public List<string> rawToList(string raw)
     {

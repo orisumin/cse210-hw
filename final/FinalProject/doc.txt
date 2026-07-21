@@ -1,0 +1,2 @@
+C:emily+emil+phone+linked+st+ci+sts+zip+position+company+July 20, 2026+False+manager+add+city+state+zip+opening+second+last
+R:james+emil+phone+linked+ad+city+state+zip+po+com+July 20, 2026+False+summ+school|school2+degree|degree2+per|per2+loca|loca2+com+po+per+lo+des+skill

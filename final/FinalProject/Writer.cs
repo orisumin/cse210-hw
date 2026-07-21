@@ -66,6 +66,17 @@ where WriterType : Writer<Doctype,WriterType>
         _document.setOrganization(organization);
         return (WriterType)this;
     }
+    public Writer<Doctype,WriterType> AddStatus(bool status)
+    {
+        _document.setStatus(status);
+        return (WriterType)this;
+    }
+    public Writer<Doctype,WriterType> AddDate(DateTime date)
+    {
+        _document.setDate(date);
+        return (WriterType)this;
+    }
+
     public virtual Doctype Write()
     {
         return _document;
