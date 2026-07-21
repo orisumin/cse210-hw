@@ -13,10 +13,10 @@ public class CoverLetter : Document
         _contactName = "No contact";
         _contactAddress = new Dictionary<string, string>
         {
-            {"Street","No description"},
-            {"City","No description"},
-            {"State","No description"},
-            {"ZIPcode","No description"}
+            {"Street","No street"},
+            {"City","No city"},
+            {"State","No state"},
+            {"ZIPcode","No Zip code"}
         };
         _opening = "No description";
         _second = "No description";
@@ -72,14 +72,26 @@ public class CoverLetter : Document
     }
     public override string ToPartsString()
     {
-        return "    1. contact name\n    2. address\n    3. opening paragraph\n    4. second paragraph\n    5. closing paragraph";
+        return "    1. contact name\n    2. contact address\n    3. opening paragraph\n    4. second paragraph\n    5. closing paragraph";
+    }
+    public void userSetContactAddress()
+    {
+        Console.Write("What is the street address?");
+        _contactAddress["Street"] = Console.ReadLine();
+        Console.Write("What is the City?");
+        _contactAddress["City"] = Console.ReadLine();
+        Console.Write("Where is the state?");
+        _contactAddress["State"] = Console.ReadLine();
+        Console.Write("What is the Zip code?");
+        _contactAddress["ZIPcode"] = Console.ReadLine();
     }
     public override void EditAttributes()
     {
-        Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}");
         bool notValid = true;
         while (notValid)
         {
+            Console.WriteLine(ToLongString());
+            Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}\n    6. Done editing.");
             try
             {
                 int userinput = int.Parse(Console.ReadLine());
@@ -88,41 +100,43 @@ public class CoverLetter : Document
                     case 1:
                         Console.WriteLine($"What is the new contact name? (Current contact name:{_contactName})");
                         _contactName = Console.ReadLine();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 2:
                         Console.WriteLine($"Let's set a new contact address! (Current contact address:{addressString(_contactAddress)})");
-                        Console.Write("What is the new street address?");
-                        _contactAddress["Street"] = Console.ReadLine();
-                        Console.Write("Where is the new City?");
-                        _contactAddress["City"] = Console.ReadLine();
-                        Console.Write("Where is the new state?");
-                        _contactAddress["State"] = Console.ReadLine();
-                        Console.Write("What is the new ZIP code?");
-                        _contactAddress["ZIPcode"] = Console.ReadLine();
+                        userSetContactAddress();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 3:
                         Console.WriteLine($"Let's rewrite the first paragraph. (Current paragraph:\n{_opening})");
                         _opening = Console.ReadLine();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 4:
                         Console.WriteLine($"Let's rewrite the second paragraph. (Current paragraph:\n{_second})");
                         _second = Console.ReadLine();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 5:
                         Console.WriteLine($"Let's rewrite the last paragraph. (Current paragraph:\n{_closing})");
                         _closing = Console.ReadLine();
+                        Console.WriteLine(ToLongString());
+                        break;
+                    case 6:
+                        notValid = false;
                         break;
                 } 
-                notValid = false;  
+  
             }catch (Exception)
             {
-                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}");
+                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}\n    6. Done editing.");
             }
         }
+        Console.WriteLine("Well done! The change has been saved in the program.\n");
     }
     public override string ToLongString()
     {
-        return $"{getName()}\n{getEmail()}-{getPhone()}-{getLinkedin()}\n{addressString(getAddress())}\n{dateString()}\n{addressString(_contactAddress)}\n\n Dear {_contactName},\n{_opening}\n{_second}\n{_closing}\n\nSincerely,\n{getName()}";
+        return $"{addressString(getAddress())}\n\n{dateString()}\n\n{addressString(_contactAddress)}\n\nDear {_contactName},\n{_opening}\n{_second}\n{_closing}\n\nSincerely,\n{getName()}\n";
     }
     public override string ToShortString()
     {

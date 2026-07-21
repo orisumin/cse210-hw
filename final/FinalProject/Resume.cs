@@ -9,21 +9,20 @@ public class Resume : Document
     {
         _summary = "No summary";
         _education = new Dictionary<string, List<string>>{
-           {"School",["No description"]},
-           {"Degree",["No description"]},
-           {"Period",["No description"]},
-           {"Location",["No description"]},
-           {"Description",["No description"]}
+           {"School",[]},
+           {"Degree",[]},
+           {"Period",[]},
+           {"Location",[]}
         };
         _experience = new Dictionary<string, List<string>>
         {
-           {"Company",["No description"]},
-           {"Position",["No description"]},
-           {"Period",["No description"]},
-           {"Location",["No description"]},
-           {"Description",["No description"]}            
+           {"Company",[]},
+           {"Position",[]},
+           {"Period",[]},
+           {"Location",[]},
+           {"Description",[]}            
         };
-        _skills = ["No skills"];
+        _skills = [];
     }
     public void setSummary(string summary)
     {
@@ -48,10 +47,6 @@ public class Resume : Document
     public void setAEdLocation(string location)
     {
         _education["Location"].Add(location);
-    }
-    public void setAEdDescription(string description)
-    {
-        _education["Description"].Add(description);
     }
     public void setACompany(string companyName)
     {
@@ -164,16 +159,14 @@ public class Resume : Document
         bool moretoAdd = true;
         while (moretoAdd)
         {
-            Console.Write("\nSchool: ");
+            Console.WriteLine("School: ");
             _education["School"].Add(Console.ReadLine());
-            Console.Write("\nDegree: ");
+            Console.WriteLine("Degree (e.g. Bachelor of Science in UX Design): ");
             _education["Degree"].Add(Console.ReadLine());
-            Console.Write("\nLocation (e.g. Rexburg, ID): ");
+            Console.WriteLine("Location (e.g. Rexburg, ID): ");
             _education["Location"].Add(Console.ReadLine());
-            Console.Write("\nPeriod (e.g. April 2018 - July 2020): ");
+            Console.WriteLine("Period (e.g. April 2018 - July 2020): ");
             _education["Period"].Add(Console.ReadLine());
-            Console.Write("\nDescription: ");
-            _education["Description"].Add(Console.ReadLine());
 
             bool notValid = true;
             while (notValid)
@@ -194,30 +187,125 @@ public class Resume : Document
                 {
                     Console.WriteLine("Error. Please answer with (y/n).");
                 }
-                
-            }
-
-
-
-            
+            }            
         }
 
 
     }
     public void userSetExperience()
     {
-        
+        bool moretoAdd = true;
+        while (moretoAdd)
+        {
+            Console.WriteLine("Company: ");
+            _experience["Company"].Add(Console.ReadLine());
+            Console.WriteLine("Position (e.g. Senior UX Designer): ");
+            _experience["Position"].Add(Console.ReadLine());
+            Console.WriteLine("Location (e.g. Rexburg, ID): ");
+            _experience["Location"].Add(Console.ReadLine());
+            Console.WriteLine("Period (e.g. April 2018 - July 2020): ");
+            _experience["Period"].Add(Console.ReadLine());
+            Console.WriteLine("Description: ");
+            _experience["Description"].Add(Console.ReadLine());
+
+            bool notValid = true;
+            while (notValid)
+            {
+                Console.WriteLine("Any more?(y/n)");
+                string userResponse = Console.ReadLine();
+                if (userResponse == "y")
+                {
+                    notValid = false;
+                    
+                }
+                else if (userResponse == "n")
+                {
+                    notValid = false;
+                    moretoAdd = false;
+                }
+                else
+                {
+                    Console.WriteLine("Error. Please answer with (y/n).");
+                }
+            }            
+        }    }
+    public string DisplaySkills()
+    {
+        string skillPrint = "";
+        int i = 1;
+        foreach(string skill in _skills)
+        {
+            skillPrint += $"    {i}. {skill}\n";
+            i++;
+        }
+        return skillPrint + $"    {i+1}. (Add a skill)"; 
+
     }
     public void userSetSkill()
     {
-        
+        bool addMore = true;
+        while (addMore)
+        {   Console.WriteLine("What skills do you have?");
+            _skills.Add(Console.ReadLine());
+            Console.WriteLine("Any more to add?(y/n)");
+            bool notValid = true;
+            while (notValid)
+            {
+                string userResponse = Console.ReadLine();
+                if (userResponse == "y")
+                {
+                    notValid = false;
+            
+                }
+                else if (userResponse == "n")
+                {
+                    notValid = false;
+                    addMore = false;
+                }
+                else
+                {
+                Console.WriteLine("Error. Please answer with (y/n).");
+                }            
+            }
+
+
+        }
     }
-    public override void EditAttributes()
+    public void userEditSkill()
     {
-        Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}");
+        DisplaySkills();
+        Console.WriteLine("Please select the number of the skill you want to edit.");
         bool notValid = true;
         while (notValid)
         {
+            try
+            {
+                int userinput = int.Parse(Console.ReadLine());
+                Console.WriteLine($"{userinput}. {_skills[userinput-1]}\nEnter a new skill that you want to replace this with. If you want to delete this skill, please type 'd'.");
+                string userResponse = Console.ReadLine();
+                if (userResponse.Replace(" ", string.Empty).ToLower() == "d")
+                {
+                    _skills.RemoveAt(userinput-1);
+                }
+                else
+                {
+                    _skills[userinput-1] = userResponse;
+
+                }
+                notValid = false;  
+            }catch (Exception)
+            {
+                Console.WriteLine($"Error. Select a number from the menu.\n {DisplaySkills()}");
+            }
+        }
+    }
+    public override void EditAttributes()
+    {
+        bool notValid = true;
+        while (notValid)
+        {
+            Console.WriteLine(ToLongString());
+            Console.WriteLine($"Please select the part you want to edit.\n{ToPartsString()}\n    5. Done editing. Finish");            
             try
             {
                 int userinput = int.Parse(Console.ReadLine());
@@ -226,34 +314,74 @@ public class Resume : Document
                     case 1:
                         Console.WriteLine($"Let's rewrite the summary. (Current summary:\n{_summary})");
                         _summary = Console.ReadLine();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 2:
-                        Console.WriteLine($"Let's edit the education section! (Current contact address:)");
+                        Console.WriteLine($"Let's rewrite the education section!");
                         userSetEducation();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 3:
-                        Console.WriteLine($"Let's edit the experience section! (Current contact address:)");
+                        Console.WriteLine($"Let's rewrite the experience section!");
                         userSetExperience();
+                        Console.WriteLine(ToLongString());
                         break;
                     case 4:
-                        Console.WriteLine($"Let's edit the skill section! (Current paragraph:\n)");
-                        userSetSkill();
+                        Console.WriteLine($"Let's edit the skill section!1");
+                        userEditSkill();
+                        Console.WriteLine(ToLongString());
+                        break;
+                    case 5:
+                        notValid = false;  
                         break;
                 } 
-                notValid = false;  
             }catch (Exception)
             {
-                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}");
+                Console.WriteLine($"Error. Select a number from the menu.\n{ToPartsString()}\n    5. Done editing.");
             }
         }
+        Console.WriteLine("Well done! The change has been saved in the program.\n");
+    }
+    public string EducationString()
+    {
+        string foramt = "";
+
+        int i = 0;
+        while (i < _education["School"].Count())
+        {
+            foramt += $"{_education["Degree"][i]}, {_education["Period"][i]}\n{_education["School"][i]}, {_education["Location"][i]}\n\n ";
+            i ++;
+        }
+        return foramt;
+    }
+    public string ExperienceString()
+    {
+        string foramt = "";
+
+        int i = 0;
+        while (i < _experience["Company"].Count())
+        {
+            foramt += $"{_experience["Position"][i]}, {_experience["Period"][i]}\n{_experience["Company"][i]}, {_experience["Location"][i]}\n{_experience["Description"][i]}\n\n ";
+            i ++;
+        }
+        return foramt;    
+    }
+    public string SkillString()
+    {
+        string format = "";
+        foreach(string skill in _skills)
+        {
+            format += $"   {skill}";
+        }
+        return format;
     }
     public override string ToPartsString()
     {
-        return "    1. summary\n    2. education\n    3. experience\n    4. skill";
+        return "    1. summary\n    2. education\n    3. experience\n    4. skills";
     }
     public override string ToLongString()
     {
-        return $"{getName()}\n{getEmail()}-{getPhone()}-{getLinkedin()}\n";
+        return $"{getName()}\n------------------------------------------------------------\n{getEmail()}   {getPhone()}   {getLinkedin()}\n------------------------------------------------------------\n{ExperienceString()}\n------------------------------------------------------------\n{EducationString()}\n------------------------------------------------------------\n{SkillString()}";
     }
     public override string ToShortString()
     {

@@ -31,6 +31,11 @@ where WriterType : Writer<Doctype,WriterType>
         _document.setLinkedin(link);
         return (WriterType)this;
     }
+    public Writer<Doctype,WriterType> AddAddress(Dictionary<string,string> address)
+    {
+        _document.setAddress(address);
+        return (WriterType)this;
+    }
     public Writer<Doctype,WriterType> AddStreet(string street)
     {
         _document.getAddress()["Street"] = street;

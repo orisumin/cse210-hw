@@ -18,10 +18,10 @@ public class Document
         _linkedin = "No address";
         _address = new Dictionary<string, string>
         {
-            {"Street","No description"},
-            {"City","No description"},
-            {"State","No description"},
-            {"ZIPcode","No description"}
+            {"Street","No street"},
+            {"City","No city"},
+            {"State","No state"},
+            {"ZIPcode","No Zip code"}
         };
         _position = "No position";
         _organization = "No organization";
@@ -36,10 +36,10 @@ public class Document
         _linkedin = "No address";
         _address = new Dictionary<string, string>
         {
-            {"Street","No description"},
-            {"City","No description"},
-            {"State","No description"},
-            {"ZIPcode","No description"}
+            {"Street","No street"},
+            {"City","No city"},
+            {"State","No state"},
+            {"ZIPcode","No Zip code"}
         };
         _position = "No position";
         _organization = "No organization";
@@ -133,9 +133,19 @@ public class Document
     }
     public string timeString()
     {
-        return _date.ToString("MM-dd-yyyy HH");
+        return _date.ToString("MM-dd-yyyy HH:mm");
     }
-
+    public void userSetAddress()
+    {
+        Console.Write("What is your street address?");
+        _address["Street"] = Console.ReadLine();
+        Console.Write("What is your City?");
+        _address["City"] = Console.ReadLine();
+        Console.Write("Where is your state?");
+        _address["State"] = Console.ReadLine();
+        Console.Write("What is your Zip code?");
+        _address["ZIPcode"] = Console.ReadLine();    
+    }
     public string addressString(Dictionary<string,string>address)
     {
         return $"{address["Street"]}\n{address["City"]},{address["State"]},{address["ZIPcode"]}";
@@ -204,7 +214,7 @@ public class Document
     }
     public string ToProfileString()
     {
-        return $"{_name}({_position}|{_organization})\n    email:{_email}\n    phone:{_phone}\n    LinkedIn:{_linkedin}\n    email:{_address["Street"]},{_address["City"]},{_address["State"]},{_address["ZIPcode"]}";
+        return $"{_name}({_position}|{_organization})\n    email:{_email}\n    phone:{_phone}\n    LinkedIn:{_linkedin}\n    address:{_address["Street"]},{_address["City"]},{_address["State"]},{_address["ZIPcode"]}";
     }
     public virtual string ToLongString()
     {
